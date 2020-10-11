@@ -3,22 +3,105 @@
 import random
 
 def main():
-    pass    #print("Welcome to Lights Out: a puzzle where you are given a grid of
-     #     lights, with some dark and others light. You must turn them all off by
-      #    clicking on the cells. Each click toggles that cell and each of its
-       #   immediate neighbors.")
-    # this is where generating a solvable square func will go
+    print("Welcome to Lights Out!")
+    square = solvableSquare()
+    solved = solvedSquare()
+    movesMade = 0
+    for i in range(len(square)):
+        print(square[i])
+    while square != solved:
+        row = int(input("Choose a row number(0-4): "))
+        collum = int(input("Choose a collum number(0-4): "))
+        puzzle(row, collum, square)
+        movesMade += 1
 
-def x():
-    y = random.randint(0, 1)
-    return y
+
+def puzzle(inRow, inColl, square):
+    selection = square[inRow][inColl]
+    
+    if selection == "□":
+        square[inRow][inColl] = "■"
+    elif selection == "■":
+        square[inRow][inColl] = "□"
+    right = ""
+    left = ""
+    up = ""
+    down = ""
+    if inRow == 0:
+        if inColl == 0:
+            square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
+            square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
+        elif inColl == 4:
+            square[inRow][inColl - 1] = opposite(square[inRow][inColl - 1])
+            square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
+        else:
+            square[inRow][inColl - 1] = opposite(square[inRow][inColl - 1])
+            square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
+            square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
+    
+    elif inRow == 4:
+        if inColl == 0:
+            square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
+            square[inRow - 1][inColl] = opposite(square[inRow - 1][inColl])
+        elif inColl == 4:
+            square[inRow][inColl - 1] = opposite(square[inRow][inColl - 1])
+            square[inRow - 1][inColl] = opposite(square[inRow - 1][inColl])
+        else:
+            square[inRow][inColl - 1] = opposite(square[inRow][inColl - 1])
+            square[inRow - 1][inColl] = opposite(square[inRow - 1][inColl])
+            square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
+
+    else:
+        if inColl == 0:
+            square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
+            square[inRow - 1][inColl] = opposite(square[inRow - 1][inColl])
+            square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
+        elif inColl == 4:
+            square[inRow][inColl - 1] = opposite(square[inRow][inColl - 1])
+            square[inRow - 1][inColl] = opposite(square[inRow - 1][inColl])
+            square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
+        else:
+            square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
+            square[inRow][inColl - 1] = opposite(square[inRow][inColl - 1])
+            square[inRow - 1][inColl] = opposite(square[inRow - 1][inColl])
+            square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
+
+    for i in range(len(square)):
+        print(square[i])
+    return square
+
+    
+
+def light():
+    light = ["□", "■"]
+    return random.choice(light)
+
+
 def solvableSquare():
-    # x = random.randint(0, 1)
-    square = [[x(), x(), x(), x(), x()],
-              [x(), x(), x(), x(), x()],
-              [x(), x(), x(), x(), x()],
-              [x(), x(), x(), x(), x()], 
-              [x(), x(), x(), x(), x()]]
-    print(square)
+    square = [[light(), light(), light(), light(), light()],
+              [light(), light(), light(), light(), light()],
+              [light(), light(), light(), light(), light()],
+              [light(), light(), light(), light(), light()], 
+              [light(), light(), light(), light(), light()]]
+    return square
 
-solvableSquare()
+
+def solvedSquare():
+    x = "□"
+    square = [[x, x, x, x, x],
+              [x, x, x, x, x],
+              [x, x, x, x, x],
+              [x, x, x, x, x],
+              [x, x, x, x, x]]
+    return square
+
+
+def opposite(block):
+    if block == "□":
+        block = "■"
+    else:
+        block = "□"
+    return block
+
+
+main()
