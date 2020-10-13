@@ -1,32 +1,52 @@
 # Lenin Valdivia - lav243@nau.edu
-# Regan Kalvelage
+# Regan Kalvelage - rnk33@nau.edu
 import random
+
 
 def main():
     print("Welcome to Lights Out!")
     square = solvableSquare()
     solved = solvedSquare()
     movesMade = 0
-    for i in range(len(square)):
-        print(square[i])
+    for row in square:
+        print("")
+        for col in row:
+            if col == "\N{WHITE SQUARE}":
+                print("\N{WHITE SQUARE} ", end = "")
+            else:
+                print("\N{BLACK SQUARE} ", end = "")
     while square != solved:
+        print("")
         row = int(input("Choose a row number(0-4): "))
-        collum = int(input("Choose a collum number(0-4): "))
+        collum = int(input("Choose a column number(0-4): "))
         puzzle(row, collum, square)
+        for row in square:
+            print("")
+            for col in row:
+                if col == "\N{WHITE SQUARE}":
+                    print("\N{WHITE SQUARE} ", end = "")
+                else:
+                    print("\N{BLACK SQUARE} ", end = "")
         movesMade += 1
+        print("")
+        print("Moves so far: " + str(movesMade))
+    print("Congratulations! You won in " + str(movesMade) + " moves!")
+    option = input("Play again? (Type 'y' or 'n'): ").lower()
+    if option == 'y' or option == 'yes':
+        main()
+    else:
+        print("Oh well, hope to see you again soon! Goodbye!")
+        return movesMade
 
 
 def puzzle(inRow, inColl, square):
     selection = square[inRow][inColl]
-    
-    if selection == "□":
-        square[inRow][inColl] = "■"
-    elif selection == "■":
-        square[inRow][inColl] = "□"
-    right = ""
-    left = ""
-    up = ""
-    down = ""
+
+    if selection == "\N{WHITE SQUARE}":
+        square[inRow][inColl] = "\N{BLACK SQUARE}"
+    elif selection == "\N{BLACK SQUARE}":
+        square[inRow][inColl] = "\N{WHITE SQUARE}"
+
     if inRow == 0:
         if inColl == 0:
             square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
@@ -38,7 +58,7 @@ def puzzle(inRow, inColl, square):
             square[inRow][inColl - 1] = opposite(square[inRow][inColl - 1])
             square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
             square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
-    
+
     elif inRow == 4:
         if inColl == 0:
             square[inRow][inColl + 1] = opposite(square[inRow][inColl + 1])
@@ -66,28 +86,20 @@ def puzzle(inRow, inColl, square):
             square[inRow - 1][inColl] = opposite(square[inRow - 1][inColl])
             square[inRow + 1][inColl] = opposite(square[inRow + 1][inColl])
 
-    for i in range(len(square)):
-        print(square[i])
     return square
-
-    
-
-def light():
-    light = ["□", "■"]
-    return random.choice(light)
 
 
 def solvableSquare():
-    square = [[light(), light(), light(), light(), light()],
-              [light(), light(), light(), light(), light()],
-              [light(), light(), light(), light(), light()],
-              [light(), light(), light(), light(), light()], 
-              [light(), light(), light(), light(), light()]]
-    return square
+    blank = solvedSquare()
+    for _ in range(random.randint(15, 50)):
+        row = random.randrange(0, 5)
+        col = random.randrange(0, 5)
+        blank = puzzle(row, col, blank)
+    return blank
 
 
 def solvedSquare():
-    x = "□"
+    x = "\N{WHITE SQUARE}"
     square = [[x, x, x, x, x],
               [x, x, x, x, x],
               [x, x, x, x, x],
@@ -97,10 +109,10 @@ def solvedSquare():
 
 
 def opposite(block):
-    if block == "□":
-        block = "■"
+    if block == "\N{WHITE SQUARE}":
+        block = "\N{BLACK SQUARE}"
     else:
-        block = "□"
+        block = "\N{WHITE SQUARE}"
     return block
 
 
